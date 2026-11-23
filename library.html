@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Библиотека — стенд</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 0 auto; padding: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+    th[data-sort] { cursor: pointer; }
+    .unavailable { color: #999; }
+    .hidden { display: none; }
+    .highlight { background: #fff3b0; }
+    .error { color: #c00; }
+    .star { color: #e0a800; }
+  </style>
+</head>
+<body>
+  <header id="top">
+    <h1>Городская библиотека</h1>
+    <nav>
+      <a href="#catalog">Каталог</a>
+      <a href="#add">Добавить книгу</a>
+      <a href="#my">Мои книги</a>
+    </nav>
+    <p id="auth">Гость. <button id="login-btn" type="button">Войти</button></p>
+  </header>
+
+  <main>
+    <section id="login" class="hidden">
+      <h2>Вход</h2>
+      <form id="login-form" novalidate>
+        <label>Логин <input name="login" required></label>
+        <label>Пароль <input name="password" type="password" required></label>
+        <button type="submit">Войти</button>
+        <p id="login-error" class="error"></p>
+      </form>
+    </section>
+
+    <section id="catalog">
+      <h2>Каталог</h2>
+      <form id="search-form">
+        <input type="search" name="q" placeholder="Название или автор">
+        <select name="genre">
+          <option value="">Все жанры</option>
+          <option value="Роман">Роман</option>
+          <option value="Фантастика">Фантастика</option>
+          <option value="Повесть">Повесть</option>
+        </select>
+        <button type="submit">Найти</button>
+      </form>
+
+      <table id="books">
+        <thead>
+          <tr>
+            <th data-sort="title">Название</th>
+            <th data-sort="author">Автор</th>
+            <th data-sort="year">Год</th>
+            <th data-sort="genre">Жанр</th>
+            <th data-sort="rating">Рейтинг</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="book" data-id="1" data-genre="Роман" data-available="true">
+            <td class="title">Война и мир</td>
+            <td class="author">Л. Н. Толстой</td>
+            <td class="year">1869</td>
+            <td class="genre">Роман</td>
+            <td class="rating">4.6</td>
+            <td><button class="take" type="button">Взять</button></td>
+          </tr>
+          <tr class="book" data-id="2" data-genre="Роман" data-available="true">
+            <td class="title">Мастер и Маргарита</td>
+            <td class="author">М. А. Булгаков</td>
+            <td class="year">1967</td>
+            <td class="genre">Роман</td>
+            <td class="rating">4.8</td>
+            <td><button class="take" type="button">Взять</button></td>
+          </tr>
+          <tr class="book" data-id="3" data-genre="Фантастика" data-available="false">
+            <td class="title">Солярис</td>
+            <td class="author">С. Лем</td>
+            <td class="year">1961</td>
+            <td class="genre">Фантастика</td>
+            <td class="rating">4.3</td>
+            <td><button class="take" type="button" disabled>Выдана</button></td>
+          </tr>
+          <tr class="book" data-id="4" data-genre="Фантастика" data-available="true">
+            <td class="title">Понедельник начинается в субботу</td>
+            <td class="author">А. и Б. Стругацкие</td>
+            <td class="year">1965</td>
+            <td class="genre">Фантастика</td>
+            <td class="rating">4.5</td>
+            <td><button class="take" type="button">Взять</button></td>
+          </tr>
+          <tr class="book" data-id="5" data-genre="Повесть" data-available="true">
+            <td class="title">Собачье сердце</td>
+            <td class="author">М. А. Булгаков</td>
+            <td class="year">1925</td>
+            <td class="genre">Повесть</td>
+            <td class="rating">4.4</td>
+            <td><button class="take" type="button">Взять</button></td>
+          </tr>
+          <tr class="book" data-id="6" data-genre="Фантастика" data-available="false">
+            <td class="title">Гиперион</td>
+            <td class="author">Д. Симмонс</td>
+            <td class="year">1989</td>
+            <td class="genre">Фантастика</td>
+            <td class="rating">4.2</td>
+            <td><button class="take" type="button" disabled>Выдана</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="add">
+      <h2>Добавить книгу</h2>
+      <form id="add-form" novalidate>
+        <label>Название <input name="title" required minlength="2"></label>
+        <label>Автор <input name="author" required></label>
+        <label>Год <input name="year" type="number" min="1450" max="2026"></label>
+        <label>Жанр
+          <select name="genre" required>
+            <option value="">— выберите —</option>
+            <option value="Роман">Роман</option>
+            <option value="Фантастика">Фантастика</option>
+            <option value="Повесть">Повесть</option>
+          </select>
+        </label>
+        <fieldset>
+          <legend>Состояние</legend>
+          <label><input type="radio" name="condition" value="new" checked> Новая</label>
+          <label><input type="radio" name="condition" value="used"> Б/у</label>
+        </fieldset>
+        <label><input type="checkbox" name="available" checked> Доступна для выдачи</label>
+        <button type="submit">Добавить</button>
+        <button type="reset">Очистить</button>
+        <p id="add-error" class="error"></p>
+      </form>
+    </section>
+
+    <section id="my">
+      <h2>Мои книги</h2>
+      <ul id="my-list">
+        <li data-book-id="2">Мастер и Маргарита <span class="due">вернуть до 30.11</span></li>
+        <li data-book-id="3">Солярис <span class="due">вернуть до 05.12</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>© Городская библиотека, <span id="year">2020</span></small>
+  </footer>
+
+  <script src="lab1.js"></script>
+  <script src="scout.js" defer></script>.
+</body>
+</html>
